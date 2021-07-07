@@ -1,0 +1,19 @@
+{
+    "name": "DecisionRules/decisionrules-php",
+    "type": "library",
+    "description": "Simple library for connecting your app to your DecisionRules.io",
+    "keywords": ["rule engine","rule", "engine", "DecisionRules"],
+    "homepage": "https://github.com/decisionrules/decisionrules-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "DecisionRules.io",
+            "email": "sales@decisionrules.io",
+            "homepage": "http://decisionrules.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
