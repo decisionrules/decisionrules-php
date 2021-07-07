@@ -1,5 +1,5 @@
 {
-    "name": "DecisionRules/decisionrules-php",
+    "name": "decisionrules/decisionrules-php",
     "type": "library",
     "description": "Simple library for connecting your app to your DecisionRules.io",
     "keywords": ["rule engine","rule", "engine", "DecisionRules"],
