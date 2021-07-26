@@ -9,20 +9,26 @@
 
         private $apiKey;
         private $geoLocation;
+        private $baseUri;
 
-        public function __construct($apiKey, $geoLoc)
+        public function __construct($apiKey, $geoLoc, $baseUri=NULL)
         {
             $this->apiKey = $apiKey;
             $this->geoLocation = $geoLoc;
+            $this->baseUri = $baseUri;
         }
 
         private function getUrl($ruleId, $version, $geoLoc) {
             $url = "";
 
-            if($geoLoc != NULL){
-                $url = "http://$geoLoc.$this->defaultEndpoint";
+            if($this->baseUri != NULL) {
+                $url = "http://$this->baseUri/rule/solve/";
             } else {
-                $url = "http://$this->defaultEndpoint";
+                if($geoLoc != NULL){
+                    $url = "http://$geoLoc.$this->defaultEndpoint";
+                } else {
+                    $url = "http://$this->defaultEndpoint";
+                }
             }
 
             if($version != NULL) {
