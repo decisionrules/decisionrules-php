@@ -2,6 +2,8 @@
     
     require_once 'enums/GeoLocation.php';
     require_once 'enums/SolverStrategy.php';
+    require_once 'enums/ProtocolsEnum.php';
+    require_once 'model/CustomDomainModel.php';
 
     class DecisionRules{
 
@@ -9,25 +11,27 @@
 
         private $apiKey;
         private $geoLocation;
-        private $baseUri;
+        private CustomDomain $customDomain;
 
-        public function __construct($apiKey, $geoLoc, $baseUri=NULL)
+        public function __construct($apiKey, $geoLoc,CustomDomain $customDomain=NULL)
         {
             $this->apiKey = $apiKey;
             $this->geoLocation = $geoLoc;
-            $this->baseUri = $baseUri;
+            $this->customDomain = $customDomain;
         }
 
         private function getUrl($ruleId, $version, $geoLoc) {
             $url = "";
 
-            if($this->baseUri != NULL) {
-                $url = "http://$this->baseUri/rule/solve/";
+            if($this->customDomain != NULL) {
+                $domainUrl = $this->customDomain->customDomainUrl;
+                $domainProtocol = $this->customDomain->customDomainProtocol;
+                $url = "$domainProtocol://$domainUrl/rule/solve/";
             } else {
                 if($geoLoc != NULL){
-                    $url = "http://$geoLoc.$this->defaultEndpoint";
+                    $url = "https://$geoLoc.$this->defaultEndpoint";
                 } else {
-                    $url = "http://$this->defaultEndpoint";
+                    $url = "https://$this->defaultEndpoint";
                 }
             }
 

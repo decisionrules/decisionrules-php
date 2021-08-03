@@ -22,14 +22,22 @@ You can create your API key here: https://app.decisionrules.io/api-keys
 * ARRAY
 * FIRST_MATCH
 
-Geolocation in DecisionRules class contructor can be omitted. Version in Solver method can be omitted. Custom URI for on premise version of DecisionRules can be omitted if using standart version.
+## Protocols
+
+* HTTP
+* HTTPS
+
+
+Geolocation in DecisionRules class contructor can be omitted. Version in Solver method can be omitted. Custom domain for on premise version of DecisionRules can be omitted if using standart version.
 
 # Usage
 
 ```php
 include 'decisionrules.php';
 
-$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT, "custom uri for on premise version of DR");
+$customDomainIfOnPremise = new CustomDomain("CUSTOM_URL_HERE", Protocols::HTTP)
+
+$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT, $customDomain);
 
 $data = array (
     'data' => 
@@ -38,5 +46,5 @@ $data = array (
     ),
 );
 
-$response = $decisionRules->Solver("RULE_ID_HERE", $data, SolverStrategy::STANDARD, 1);
+$response = $decisionRules->Solver("RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
 ```
