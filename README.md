@@ -35,9 +35,7 @@ Geolocation in DecisionRules class contructor can be omitted. Version in Solver 
 ```php
 include 'decisionrules.php';
 
-$customDomainIfOnPremise = new CustomDomain("CUSTOM_URL_HERE", Protocols::HTTP)
-
-$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT, $customDomain);
+$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT);
 
 $data = array (
     'data' => 
@@ -47,4 +45,14 @@ $data = array (
 );
 
 $response = $decisionRules->Solver("RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
+```
+
+## Custom domain usage
+
+Just create CustomDomain instace that takes string url and Protocols enum value and pass it to the DecisionRules object as so.
+
+```php
+$customDomainIfOnPremise = new CustomDomain("your.domain.com", Protocols::HTTP);
+
+$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT, $customDomain);
 ```
