@@ -1,6 +1,6 @@
 # DecisionRulespy
 
-Simple async python library that allows you to easily connect to [Decisionrules.io](https://decisionrules.io) from your python application.
+Simple async python library that allows you to easily connect to [Decisionrules.io](https://decisionrules.io) from your PHP application.
 
 # Where do i get api key?
 
