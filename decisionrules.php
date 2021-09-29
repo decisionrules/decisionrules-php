@@ -4,10 +4,9 @@
     require_once 'enums/SolverStrategy.php';
     require_once 'enums/ProtocolsEnum.php';
     require_once 'model/CustomDomainModel.php';
+    require_once 'enums/SolverType.php';
 
     class DecisionRules{
-
-        private $defaultEndpoint = 'api.decisionrules.io/rule/solve/';
 
         private $apiKey;
         private $geoLocation;
@@ -20,18 +19,18 @@
             $this->customDomain = $customDomain;
         }
 
-        private function getUrl($ruleId, $version, $geoLoc) {
+        private function getUrl($solverType, $ruleId, $version, $geoLoc) {
             $url = "";
 
             if($this->customDomain != NULL) {
                 $domainUrl = $this->customDomain->customDomainUrl;
                 $domainProtocol = $this->customDomain->customDomainProtocol;
-                $url = "$domainProtocol://$domainUrl/rule/solve/";
+                $url = "$domainProtocol://$domainUrl/$solverType/solve/";
             } else {
                 if($geoLoc != NULL){
-                    $url = "https://$geoLoc.$this->defaultEndpoint";
+                    $url = "https://$geoLoc.api.decisionrules.io/$solverType/solve/";
                 } else {
-                    $url = "https://$this->defaultEndpoint";
+                    $url = "https://api.decisionrules.io/$solverType/solve/";
                 }
             }
 
@@ -45,9 +44,9 @@
 
         }
 
-        public function Solver($ruleId, $data, $solverStrategy, $version = NULL){
+        public function Solver($solverType, $ruleId, $data, $solverStrategy, $version = NULL){
 
-            $endpoint = $this->getUrl($ruleId, $version, $this->geoLocation);
+            $endpoint = $this->getUrl($solverType, $ruleId, $version, $this->geoLocation);
 
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
 
