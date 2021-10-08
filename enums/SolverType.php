@@ -2,5 +2,5 @@
 
     abstract class SolverTypes{
         const RULE = 'rule';
-        const RULEFLOW = 'composition';
+        const RULE_FLOW = 'composition';
     }

@@ -48,7 +48,7 @@ $data = array (
 
 $response = $decisionRules->Solver(SolverTypes::RULE, "RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
 
-$response = $decisionRules->Solver(SolverTypes::RULEFLOW, "RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
+$response = $decisionRules->Solver(SolverTypes::RULE_FLOW, "RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
 ```
 
 ## Custom domain usage
