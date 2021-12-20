@@ -10,9 +10,9 @@
 
         private $apiKey;
         private $geoLocation;
-        private CustomDomain $customDomain;
+        private ?CustomDomain $customDomain;
 
-        public function __construct($apiKey, $geoLoc,CustomDomain $customDomain=NULL)
+        public function __construct($apiKey, $geoLoc=GeoLocation::DEFAULT,CustomDomain $customDomain=NULL)
         {
             $this->apiKey = $apiKey;
             $this->geoLocation = $geoLoc;
