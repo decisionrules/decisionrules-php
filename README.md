@@ -8,14 +8,6 @@ You can create your API key here: https://app.decisionrules.io/api-keys
 
 # Enums
 
-## Geolocation
-
-* DEFAULT
-* EU1
-* EU2
-* US1
-* US2
-
 ## SolverStrategy
 
 * STANDARD
@@ -27,9 +19,6 @@ You can create your API key here: https://app.decisionrules.io/api-keys
 * HTTP
 * HTTPS
 
-
-Geolocation in DecisionRules class contructor can be omitted. Version in Solver method can be omitted. Custom domain for on premise version of DecisionRules can be omitted if using standart version.
-
 # Usage
 
 SolverType defines type of solver that should be used.
@@ -37,7 +26,7 @@ SolverType defines type of solver that should be used.
 ```php
 include 'decisionrules.php';
 
-$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT);
+$decisionRules = new DecisionRules('API_KEY_HERE');
 
 $data = array (
     'data' => 
@@ -58,7 +47,7 @@ Just create CustomDomain instace that takes string url and Protocols enum value 
 ```php
 $customDomainIfOnPremise = new CustomDomain("your.domain.com", Protocols::HTTP);
 
-$decisionRules = new DecisionRules('API_KEY_HERE', GeoLocation::DEFAULT, $customDomain);
+$decisionRules = new DecisionRules('API_KEY_HERE', $customDomain);
 ```
 
 # Management API usage
