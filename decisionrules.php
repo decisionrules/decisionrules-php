@@ -9,29 +9,25 @@
     class DecisionRules{
 
         private $apiKey;
-        private $geoLocation;
         private ?CustomDomain $customDomain;
 
-        public function __construct($apiKey, $geoLoc=GeoLocation::DEFAULT,CustomDomain $customDomain=NULL)
+        public function __construct($apiKey ,CustomDomain $customDomain=NULL)
         {
             $this->apiKey = $apiKey;
-            $this->geoLocation = $geoLoc;
             $this->customDomain = $customDomain;
         }
 
-        private function getUrl($solverType, $ruleId, $version, $geoLoc) {
+        private function getUrl($solverType, $ruleId, $version) {
             $url = "";
 
             if($this->customDomain != NULL) {
                 $domainUrl = $this->customDomain->customDomainUrl;
                 $domainProtocol = $this->customDomain->customDomainProtocol;
-                $url = "$domainProtocol://$domainUrl/$solverType/solve/";
+                $domainPort = $this->customDomain->customDomainPort;
+                $url = "$domainProtocol://$domainUrl:$domainPort/$solverType/solve/";
             } else {
-                if($geoLoc != NULL){
-                    $url = "https://$geoLoc.api.decisionrules.io/$solverType/solve/";
-                } else {
-                    $url = "https://api.decisionrules.io/$solverType/solve/";
-                }
+                $url = "https://api.decisionrules.io/$solverType/solve/";
+                
             }
 
             if($version != NULL) {
@@ -44,9 +40,19 @@
 
         }
 
-        public function Solver($solverType, $ruleId, $data, $solverStrategy, $version = NULL){
+        public function Solve($ruleId, $data, $solverStrategy, $version = NULL){
 
-            $endpoint = $this->getUrl($solverType, $ruleId, $version, $this->geoLocation);
+            $endpoint = $this->getUrl(SolverTypes::RULE, $ruleId, $version);
+
+            $response = $this->ApiCall($endpoint, $solverStrategy, $data);
+
+            return $response;
+
+        }
+
+        public function SolveRuleFlow($ruleId, $data, $solverStrategy, $version = NULL){
+
+            $endpoint = $this->getUrl(SolverTypes::RULE_FLOW, $ruleId, $version);
 
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
 

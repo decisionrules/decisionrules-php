@@ -3,11 +3,13 @@
     class CustomDomain{
         private $customDomainUrl;
         private $customDomainProtocol;
+        private $customDomainPort;
 
-        public function __construct($customDomainUrl, $customDomainProtocol)
+        public function __construct($customDomainUrl, $customDomainProtocol, $customDomainPort)
         {
             $this->customDomainUrl = $customDomainUrl;
             $this->customDomainProtocol = $customDomainProtocol;
+            $this->customDomainPort = $customDomainPort;
         }
 
         public function __get($property) {
