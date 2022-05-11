@@ -36,11 +36,9 @@
 
             if ($domain != NULL && $protocol != NULL && $port != NULL) {
                 $url = "$protocol://$domain:$port/$solverType/solve/";
-            } else {
-                $url = "https://api.decisionrules.io/$solverType/solve/";
             }
 
-            
+            $url = "https://api.decisionrules.io/$solverType/solve/";
 
             if($version != NULL) {
                 $url = "$url$ruleId/$version";
