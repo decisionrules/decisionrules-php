@@ -1,5 +1,7 @@
 <?php
 
+    require_once "HttpClient.php";
+
     class DrManagementApi {
         private $customDomain;
         private $auth;
@@ -10,303 +12,143 @@
             $this->auth = "Authorization: Bearer $management_key";
         }
 
-        private function getUrl() {
-            $url = "";
+        public function getRule($ruleId, $version = NULL){
+            $uri = $this->customDomainn->getUrl();
 
-            if($this->customDomain != NULL) {
-                $domainUrl = $this->customDomain->customDomainUrl;
-                $domainProtocol = $this->customDomain->customDomainProtocol;
-                $domainPort = $this->customDomain->customDomainPort;
-                $url = "$domainProtocol://$domainUrl:$domainPort/api";
+            if ($version == NULL) {
+                $url =  "$uri/rule/$ruleId/";
             } else {
-                
-                $url = "https://api.decisionrules.io/api";
-                
+                $url =  "$uri/rule/$ruleId/$version";
             }
-
-            return $url;
-
+            
+            return HttpClient::get($url, $this->auth);
         }
 
-        private function getCall($endpoint) {
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_URL, $endpoint);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
-        }
-
-        public function getRule($ruleId, $version = 1){
-            $uri = $this->getUrl();
-
-            $url =  "$uri/rule/$ruleId/$version";
-
-            return $this->getCall($url);
-        }
-
-        public function getItems(){
-            $uri = $this->getUrl();
+        public function getSpaceItems(){
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/space/items";
 
-            return $this->getCall($url);
+            return HttpClient::get($url, $this->auth);
         }
 
         public function createRule($spaceId, $data){
 
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule/$spaceId";
-
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            
+            return HttpClient::post($url, $data, $this->auth);
         }
 
         public function updateRule($ruleId, $version, $data){
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule/$ruleId/$version";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            return HttpClient::put($url, $data, $this->auth);
         }
 
         public function deleteRule($ruleId, $version){
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule/$ruleId/$version";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return;
+            return HttpClient::delete($url, $this->auth);
         }
 
-        public function getRuleFlow($itemId, $version=1) {
-            $uri = $this->getUrl();
+        public function getRuleFlow($itemId, $version=NULL) {
+            $uri = $this->customDomainn->getUrl();
 
-            $url =  "$uri/rule-flow/$itemId/$version";
+            if ($version == NULL) {
+                $url =  "$uri/rule-flow/$itemId/";
+            } else {
+                $url =  "$uri/rule-flow/$itemId/$version";
+            }
+            
 
-            return $this->getCall($url);
+            return HttpClient::get($url, $this->auth);
         }
 
 
         public function createRuleFlow($data) {
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule-flow/";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            return HttpClient::post($url, $data, $this->auth);
         }
 
         public function updateRuleFlow($itemId, $data, $version) {
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule-flow/$itemId/$version";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            return HttpClient::put($url, $data, $this->auth);
         }
 
         public function deleteRuleFlow($itemId, $version) {
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/rule-flow/$itemId/$version";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return;
+            return HttpClient::delete($url, $this->auth);
         }
-        public function exportRuleFLow($itemId, $version=1) {
-            $uri = $this->getUrl();
 
-            $url =  "$uri/rule-flow/export/$itemId/$version";
+        public function exportRuleFLow($itemId, $version=NULL) {
+            $uri = $this->customDomainn->getUrl();
 
-            return $this->getCall($url);
+            if ($version == NULL) {
+                $url =  "$uri/rule-flow/export/$itemId/";
+            } else {
+                $url =  "$uri/rule-flow/export/$itemId/$version";
+            }
+            
+
+            return HttpClient::get($url, $this->auth);
         }
-        public function importRuleFlow($data, $itemId="", $version=1) {
 
-            $url = $this->getUrl();
+        public function importRuleFlow($data, $itemId=NULL, $version=NULL) {
 
-            if ($itemId == "" && $version == 1) {
+            $url = $this->customDomainn->getUrl();
+
+            if ($itemId == "" && $version == NULL) {
                 $url= "$url/rule-flow/import/";
             }
 
-            if ($itemId !== "" && $version == 1){
+            if ($itemId !== "" && $version == NULL){
                 $url= "$url/rule-flow/import/?new-version=$itemId";
             }
 
-            if ($itemId !=="" && $version !== 1) {
+            if ($itemId !=="" && $version !== NULL) {
                 $url= "$url/rule-flow/import/?overwrite=$itemId&version=$version";
             }
 
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_POST, 1);
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            return HttpClient::post($url, $data, $this->auth);
         }
 
-        public function getTags(array $tags) {
+        public function getSpaceItemsByTags(array $tags) {
             $tagsQuery = implode(",", $tags);
 
-            $url = "$this->getUrl()/tags/items/?tags=$tagsQuery";
+            $url = $this->customDomain->getUrl();
 
-            return $this->getCall($url);
+            $url = "$url/tags/items/?tags=$tagsQuery";
+
+            return HttpClient::get($url, $this->auth);
         }
-        public function updateTags($data, $itemId, $version=1) {
 
-            $url = $this->getUrl();
 
-            $url = "$url/tags/$itemId/$version";
+        public function updateTags($data, $itemId, $version=NULL) {
 
-            $curl = curl_init();
+            $url = $this->customDomainn->getUrl();
 
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
-
-            $request = json_encode($data);
-
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return json_decode($response);
+            if ($version == NULL) {
+                $url = "$url/tags/$itemId/";
+            } else {
+                $url = "$url/tags/$itemId/$version";
+            }
+            
+            return HttpClient::patch($url, $data, $this->auth);
         }
         public function deleteTags($itemId, $version) {
-            $uri = $this->getUrl();
+            $uri = $this->customDomainn->getUrl();
             $url =  "$uri/tags/$itemId/$version";
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $this->auth));
-
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
-
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-            curl_setopt($curl, CURLOPT_URL, $url);
-
-            $response = curl_exec($curl);
-
-            curl_close($curl);
-
-            return;
+            return HttpClient::delete($url, $this->auth);
         }
 
     }
