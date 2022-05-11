@@ -148,9 +148,12 @@
             
             return HttpClient::patch($url, $data, $this->auth);
         }
-        public function deleteTags($itemId, $version) {
+        public function deleteTags($itemId, $version, array $tags) {
+
+            $tagsQuery = implode(",", $tags);
+
             $uri = $this->customDomain->getManagementUrl();
-            $url =  "$uri/tags/$itemId/$version";
+            $url =  "$uri/tags/$itemId/$version/?tags=$tagsQuery";
 
             return HttpClient::delete($url, $this->auth);
         }
