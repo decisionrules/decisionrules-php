@@ -35,10 +35,10 @@
             return HttpClient::get($url, $this->auth);
         }
 
-        public function createRule($spaceId, $data){
+        public function createRule($data){
 
             $uri = $this->customDomain->getManagementUrl();
-            $url =  "$uri/rule/$spaceId";
+            $url =  "$uri/rule/";
             
             return HttpClient::post($url, $data, $this->auth);
         }
