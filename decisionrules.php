@@ -1,60 +1,74 @@
-<?php
+<?php 
+    
+    require_once 'enums/GeoLocation.php';
+    require_once 'enums/SolverStrategy.php';
+    require_once 'enums/ProtocolsEnum.php';
+    require_once 'model/CustomDomainModel.php';
+    require_once 'enums/SolverType.php';
 
-    class CustomDomain{
-        private $customDomain;
-        private $customDomainProtocol;
-        private $customDomainPort;
+    class DecisionRules{
 
-        // domainUrl -> domain
-        public function __construct($customDomain, $customDomainProtocol, $customDomainPort)
+        private $apiKey;
+        private ?CustomDomain $customDomain;
+
+        public function __construct($apiKey, CustomDomain $customDomain=NULL)
         {
+            $this->apiKey = $apiKey;
+            if ($customDomain == NULL) {
+                $this->customDomain = new CustomDomain(NULL, NULL, NULL);
+            } else {
+                $this->customDomain = $customDomain;
+            }
             $this->customDomain = $customDomain;
-            $this->customDomainProtocol = $customDomainProtocol;
-            $this->customDomainPort = $customDomainPort;
         }
 
-        public function getManagementUrl() {
+        public function solveRule($ruleId, $data, $solverStrategy, $version = NULL){
 
-            $domain = $this->customDomain;
-            $protocol = $this->customDomainProtocol;
-            $port = $this->customDomainPort;
-            
-            if ($domain != NULL && $protocol != NULL && $port != NULL) {
-                return "$protocol://$domain:$port/api";
-            }
-                
-            return "https://api.decisionrules.io/api";
+            $solverType = SolverTypes::RULE;
 
+            $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
+            $response = $this->ApiCall($endpoint, $solverStrategy, $data);
+
+            return $response;
         }
 
-        public function getSolverUrl($solverType, $ruleId, $version) {
-            $domain = $this->customDomain;
-            $protocol = $this->customDomainProtocol;
-            $port = $this->customDomainPort;
-            
-            $url = "";
+        public function solveRuleFLow($ruleId, $data, $solverStrategy, $version = NULL){
 
-            if ($domain != NULL && $protocol != NULL && $port != NULL) {
-                $url = "$protocol://$domain:$port/$solverType/solve/";
+            $solverType = SolverTypes::RULE_FLOW;
+
+            $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
+            $response = $this->ApiCall($endpoint, $solverStrategy, $data);
+
+            return $response;
+        }
+
+        private function ApiCall($endpoint, $solverStrategy, $request) {
+            $curl = curl_init();
+
+            $auth = "Authorization: Bearer $this->apiKey";
+
+            if($solverStrategy != NULL || $solverStrategy != SolverStrategy::STANDARD) {
+                $strategy = "X-Strategy: $solverStrategy";
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth, $strategy));
             } else {
-                $url = "https://api.decisionrules.io/$solverType/solve/";
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth));
             }
 
-            
+            curl_setopt($curl, CURLOPT_POST, 1);
 
-            if($version != NULL) {
-                $url = "$url$ruleId/$version";
-            } else {
-                $url = "$url$ruleId";
-            }
-            
-            return $url;
+            $request = json_encode($request);
 
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
+
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+
+            curl_setopt($curl, CURLOPT_URL, $endpoint);
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+
+            return json_decode($response);
         }
 
-        public function __get($property) {
-            if (property_exists($this, $property)) {
-              return $this->$property;
-            }
-        }
     }

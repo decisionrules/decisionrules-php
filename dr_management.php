@@ -35,19 +35,19 @@
             return HttpClient::get($url, $this->auth);
         }
 
-        public function createRule($data){
+        public function createRule($rule){
 
             $uri = $this->customDomain->getManagementUrl();
             $url =  "$uri/rule/";
             
-            return HttpClient::post($url, $data, $this->auth);
+            return HttpClient::post($url, $rule, $this->auth);
         }
 
-        public function updateRule($ruleId, $version, $data){
+        public function updateRule($ruleId, $version, $rule){
             $uri = $this->customDomain->getManagementUrl();
             $url =  "$uri/rule/$ruleId/$version";
 
-            return HttpClient::put($url, $data, $this->auth);
+            return HttpClient::put($url, $rule, $this->auth);
         }
 
         public function deleteRule($ruleId, $version){
@@ -71,18 +71,18 @@
         }
 
 
-        public function createRuleFlow($data) {
+        public function createRuleFlow($ruleFlow) {
             $uri = $this->customDomain->getManagementUrl();
             $url =  "$uri/rule-flow/";
 
-            return HttpClient::post($url, $data, $this->auth);
+            return HttpClient::post($url, $ruleFlow, $this->auth);
         }
 
-        public function updateRuleFlow($itemId, $data, $version) {
+        public function updateRuleFlow($itemId, $ruleFlow, $version) {
             $uri = $this->customDomain->getManagementUrl();
             $url =  "$uri/rule-flow/$itemId/$version";
 
-            return HttpClient::put($url, $data, $this->auth);
+            return HttpClient::put($url, $ruleFlow, $this->auth);
         }
 
         public function deleteRuleFlow($itemId, $version) {
@@ -105,7 +105,7 @@
             return HttpClient::get($url, $this->auth);
         }
 
-        public function importRuleFlow($data, $itemId=NULL, $version=NULL) {
+        public function importRuleFlow($ruleFlow, $itemId=NULL, $version=NULL) {
 
             $url = $this->customDomain->getManagementUrl();
 
@@ -122,7 +122,7 @@
             }
 
 
-            return HttpClient::post($url, $data, $this->auth);
+            return HttpClient::post($url, $ruleFlow, $this->auth);
         }
 
         public function getSpaceItemsByTags(array $tags) {
@@ -136,7 +136,7 @@
         }
 
 
-        public function updateTags($data, $itemId, $version=NULL) {
+        public function updateTags($tags, $itemId, $version=NULL) {
 
             $url = $this->customDomain->getManagementUrl();
 
@@ -146,7 +146,7 @@
                 $url = "$url/tags/$itemId/$version";
             }
             
-            return HttpClient::patch($url, $data, $this->auth);
+            return HttpClient::patch($url, $tags, $this->auth);
         }
         public function deleteTags($itemId, $version, array $tags) {
 
