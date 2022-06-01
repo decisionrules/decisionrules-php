@@ -18,7 +18,6 @@
             } else {
                 $this->customDomain = $customDomain;
             }
-            $this->customDomain = $customDomain;
         }
 
         public function solveRule($ruleId, $data, $solverStrategy, $version = NULL){
