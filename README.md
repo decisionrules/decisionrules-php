@@ -1,74 +1,95 @@
-# DecisionRulespy
 
-Simple async python library that allows you to easily connect to [Decisionrules.io](https://decisionrules.io) from your PHP application.
+# Summary
 
-# Where do i get api key?
+[Decisionrules.io](https://decisionrules.io/) library that allows you to integrate DecisionRules Solver and Management API to you application as easily as possible. SDK allow you to solve all rule types that are available, CRUD operations on all rule types, rules status management and rule tags management.
 
-You can create your API key here: https://app.decisionrules.io/api-keys
+> VERSION 3 IS NEW MAJOR VERSION OF THIS SDK AND IT IS STRONGLY RECOMMENDED, DUE TO DEPRECATION OF OLDER VERSIONS.
 
-# Enums
+  
 
-## SolverStrategy
+# Installation
 
-* STANDARD
-* ARRAY
-* FIRST_MATCH
+You can simply integrate [SDK](https://packagist.org/packages/decisionrules/decisionrules-php#dev-main) to your project via NPM package manager.
 
-## Protocols
+# Defining Custom domain
 
-* HTTP
-* HTTPS
+Custom domain is special class that is designed for those who uses DecisionRules in private cloud or as on-premise. Class takes up to 3 arguments.
 
-# Usage
+  
 
-SolverType defines type of solver that should be used.
+Domain argument is name of desired domain, protocol is HTTP or HTTPS and port is TCP/IP port.
+
+If port is not defined in the class constructor it is set to default value by protocol value, 80 for HTTP and 443 for HTTPS.
 
 ```php
-include 'decisionrules.php';
 
-$decisionRules = new DecisionRules('API_KEY_HERE');
+$customDomain = new  CustomDomain("localhost", Protocols::HTTP, 8080);
 
-$data = array (
-    'data' => 
-    array (
-        'day' => 'today',
-    ),
-);
-
-$response = $decisionRules->Solver(SolverTypes::RULE, "RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
-
-$response = $decisionRules->Solver(SolverTypes::RULE_FLOW, "RULE_ID_HERE", $data, SolverStrategy::STANDARD, "VERSION_HERE");
 ```
 
-## Custom domain usage
+# Using Solver API
 
-Just create CustomDomain instace that takes string url and Protocols enum value and pass it to the DecisionRules object as so.
+Solver class takes up to 2 arguments that are `api key`(can be generated on dashboard), `custom domain` object. Class exposes two methods: solveRule and solveRuleFlow.
 
 ```php
-$customDomainIfOnPremise = new CustomDomain("your.domain.com", Protocols::HTTP);
-
-$decisionRules = new DecisionRules('API_KEY_HERE', $customDomain);
+public function awesomeSolver(){
+	$decisionRules = new  DecisionRules($prodSolverKey);
+	$ruleId = "myRuleId"
+	$response = $decisionRules->SolveRule($prodRuleId,$data,SolverStrategy::STANDARD, 1);
+}
 ```
 
-# Management API usage
+# Using Management API
 
-Management api is accessible in 'DrManagementApi' and required management api key that you can obtain in api key section in DecisionRules app.
+Management class takes on argument, management api key. Class exposes number of methods listed below.
 
-## 2.1 Management API usage example
+  
 
-First of all define management api key in 'DrManagementApi' instance. Then simply call method you desire from 'DrMamangementApi' class.
+- getRule - get rule by itemId and version*
+
+- createRule - create rule by spaceId and ruleData
+
+- updateRule - updates rule by itemId, newRuleData and version*
+
+- deleteRule - deletes rule by itemId and version
+
+- getSpaceItems - get space items that belongs to management api key
+
+- getRuleFlow - get rule by itemId and version*
+
+- createRuleFlow - create ruleflow in space that belongs to management api key
+
+- updateRuleFlow - updates ruleflowby itemId, newRuleflowData and version*
+
+- deleteRuleFlow - deletes ruleflow by itemId and version
+
+- exportRuleFlow - exports ruleflow by itemId and version*
+
+- importRuleFlow - import ruleflow as a new ruleflow or new version of existing ruleflow or override existing ruleflow.
+
+- changeRuleStatus - changes rule status
+
+- changeRuleFlowStatus - changes ruleflow status
+
+- getRulesByTags - gets rule by tag.
+
+- updateTags - update tags on rule or ruleflow
+
+- deleteTags - delete tags on rule or ruleflow
+
+  
+
+>  \* = optional argument
+
+  
+
+## Example usage
 
 ```php
-$managementAPI = new DrManagementApi("YOUR_MANAGEMENT_API_KEY");
 
-$getRuleId = $managementAPI->getRuleById("RULE_ID");
-$getRuleAndVersion = $managementAPI->getRuleByIdAndVersion("RULE_ID", "VERSION");
-$getSpace = $managementAPI->getSpaceInfo("SPACE_ID");
-
-$postRule = $managementAPI->postRuleForSpace("SPACE_ID", $postDATA);
-$putRule = $managementAPI->putRule("RULE_ID", "1", $putDATA);
-
-$deleteRule = $managementAPI->deleteRule("RULE_ID", "1");
+public  manageRules(){
+	$managementAPI = new  DrManagementApi($managementAPiKey);
+	$ruleId = "myRuleId"
+	$getRule = $managementAPI->getRule($ruleId);
+}
 ```
-
-Data for POST and PUT method are encoded json string of rule format that can be exported from our app or you can made one by yourself.
