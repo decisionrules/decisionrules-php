@@ -3,7 +3,7 @@
     require_once 'enums/SolverStrategy.php';
     require_once 'enums/ProtocolsEnum.php';
     require_once 'enums/SolverType.php';
-    require_once './CustomDomain.php';
+    require_once 'CustomDomain.php';
 
     class DecisionRules{
 
