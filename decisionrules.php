@@ -1,6 +1,5 @@
 <?php 
     
-    require_once 'enums/GeoLocation.php';
     require_once 'enums/SolverStrategy.php';
     require_once 'enums/ProtocolsEnum.php';
     require_once 'model/CustomDomainModel.php';
