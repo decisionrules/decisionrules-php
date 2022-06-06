@@ -22,6 +22,10 @@
 
         public function solveRule($ruleId, $data, $solverStrategy, $version = NULL){
 
+            if(!property_exists($data, 'data')) {
+                $data = (object) array('data'=> $data);
+            } 
+
             $solverType = SolverTypes::RULE;
 
             $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
