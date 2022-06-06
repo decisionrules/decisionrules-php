@@ -1,5 +1,7 @@
 <?php
 
+    namespace DecisionRules;
+
     class CustomDomain{
         private $customDomain;
         private $customDomainProtocol;

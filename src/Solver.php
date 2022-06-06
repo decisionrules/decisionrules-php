@@ -1,14 +1,11 @@
 <?php 
     
-    require_once 'enums/SolverStrategy.php';
-    require_once 'enums/ProtocolsEnum.php';
-    require_once 'enums/SolverType.php';
-    require_once 'CustomDomain.php';
+    namespace DecisionRules;
 
-    class DecisionRules{
+    class Solver{
 
         private $apiKey;
-        private ?CustomDomain $customDomain;
+        private CustomDomain $customDomain;
 
         public function __construct($apiKey, CustomDomain $customDomain=NULL)
         {
@@ -26,7 +23,7 @@
                 $data = (object) array('data'=> $data);
             } 
 
-            $solverType = SolverTypes::RULE;
+            $solverType = \DecisionRules\Enums\SolverTypes::RULE;
 
             $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
@@ -36,7 +33,7 @@
 
         public function solveRuleFLow($ruleId, $data, $solverStrategy, $version = NULL){
 
-            $solverType = SolverTypes::RULE_FLOW;
+            $solverType = \DecisionRules\Enums\SolverTypes::RULE_FLOW;
 
             $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
@@ -49,7 +46,7 @@
 
             $auth = "Authorization: Bearer $this->apiKey";
 
-            if($solverStrategy != NULL || $solverStrategy != SolverStrategy::STANDARD) {
+            if($solverStrategy != NULL || $solverStrategy != \DecisionRules\Enums\SolverStrategy::STANDARD) {
                 $strategy = "X-Strategy: $solverStrategy";
                 curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth, $strategy));
             } else {

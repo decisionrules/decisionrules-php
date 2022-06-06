@@ -1,8 +1,10 @@
 <?php
 
+    namespace DecisionRules;
+
     require_once "HttpClient.php";
 
-    class DrManagementApi {
+    class Management {
         private $customDomain;
         private $auth;
 
@@ -168,7 +170,7 @@
                 $url = "$url/rule/status/$itemId/$status/$version";
             }
 
-            return HttpClient::put($url, new stdClass(), $this->auth);
+            return HttpClient::put($url, json_encode(array()), $this->auth);
         }
 
         public function changeRuleFlowStatus($itemId, $status, $version=NULL)
@@ -181,9 +183,6 @@
                 $url = "$url/rule-flow/status/$itemId/$status/$version";
             }
 
-            return HttpClient::put($url, new stdClass(), $this->auth);
+            return HttpClient::put($url, json_encode(array()), $this->auth);
         }
-
-        
-
     }

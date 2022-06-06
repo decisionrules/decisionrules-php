@@ -1,5 +1,7 @@
 <?php
 
+    namespace DecisionRules\Enums;
+
     abstract class SolverStrategy{
         const STANDARD = 'STANDARD';
         const ARRAY_STRATEGY = 'ARRAY';
