@@ -2,6 +2,9 @@
     
     namespace DecisionRules;
 
+    use DecisionRules\Enums\SolverTypes;
+    use DecisionRules\Enums\SolverStrategy;
+
     class Solver{
 
         private $apiKey;
@@ -23,7 +26,7 @@
                 $data = (object) array('data'=> $data);
             } 
 
-            $solverType = \DecisionRules\Enums\SolverTypes::RULE;
+            $solverType = SolverTypes::RULE;
 
             $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
@@ -33,7 +36,7 @@
 
         public function solveRuleFLow($ruleId, $data, $solverStrategy, $version = NULL){
 
-            $solverType = \DecisionRules\Enums\SolverTypes::RULE_FLOW;
+            $solverType = SolverTypes::RULE_FLOW;
 
             $endpoint = $this->customDomain->getSolverUrl($solverType, $ruleId, $version);
             $response = $this->ApiCall($endpoint, $solverStrategy, $data);
@@ -46,7 +49,7 @@
 
             $auth = "Authorization: Bearer $this->apiKey";
 
-            if($solverStrategy != NULL || $solverStrategy != \DecisionRules\Enums\SolverStrategy::STANDARD) {
+            if($solverStrategy != NULL || $solverStrategy != SolverStrategy::STANDARD) {
                 $strategy = "X-Strategy: $solverStrategy";
                 curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $auth, $strategy));
             } else {
