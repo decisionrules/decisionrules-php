@@ -2,8 +2,6 @@
 
     namespace DecisionRules;
 
-    require_once "HttpClient.php";
-
     class Management {
         private $customDomain;
         private $auth;
