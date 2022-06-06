@@ -22,12 +22,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "MyApp\\": "src/"
+            "DecisionRules\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MyApp\\": "src/"
+            "DecisionRules\\": "src/"
         }
     }
 }

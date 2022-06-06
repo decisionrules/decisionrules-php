@@ -1,5 +1,7 @@
 <?php
 
+    namespace DecisionRules;
+
     class HttpClient{
 
         public static function get($url, $auth){
