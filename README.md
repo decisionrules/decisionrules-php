@@ -6,7 +6,6 @@
 > VERSION 3 IS NEW MAJOR VERSION OF THIS SDK AND IT IS STRONGLY RECOMMENDED, DUE TO DEPRECATION OF OLDER VERSIONS.
 
   
-
 # Installation
 
 You can simply integrate [SDK](https://packagist.org/packages/decisionrules/decisionrules-php#dev-main) to your project via NPM package manager.
@@ -16,7 +15,6 @@ You can simply integrate [SDK](https://packagist.org/packages/decisionrules/deci
 Custom domain is special class that is designed for those who uses DecisionRules in private cloud or as on-premise. Class takes up to 3 arguments.
 
   
-
 Domain argument is name of desired domain, protocol is HTTP or HTTPS and port is TCP/IP port.
 
 If port is not defined in the class constructor it is set to default value by protocol value, 80 for HTTP and 443 for HTTPS.
@@ -33,9 +31,10 @@ Solver class takes up to 2 arguments that are `api key`(can be generated on dash
 
 ```php
 public function awesomeSolver(){
-	$decisionRules = new  DecisionRules($prodSolverKey);
-	$ruleId = "myRuleId"
-	$response = $decisionRules->SolveRule($prodRuleId,$data,SolverStrategy::STANDARD, 1);
+	$ruleId = "MY_RULE_ID";
+	$solver = new Solver($apiKey);
+	$request = (object) array('data'=> array('input_attribute'=> 'value'));
+	return $solver->solveRule($ruleId, $request, SolverStrategy::STANDARD);
 }
 ```
 
@@ -86,10 +85,11 @@ Management class takes on argument, management api key. Class exposes number of 
 ## Example usage
 
 ```php
-
 public  manageRules(){
-	$managementAPI = new  DrManagementApi($managementAPiKey);
-	$ruleId = "myRuleId"
-	$getRule = $managementAPI->getRule($ruleId);
+	$managementKey = "MY_MANAGEMENT_KEY";
+
+	$manager = new Management($managementKey);
+
+	return $manager->getRule($ruleId, 1);
 }
 ```
