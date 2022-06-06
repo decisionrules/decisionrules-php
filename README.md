@@ -13,7 +13,6 @@ You can simply integrate [SDK](https://packagist.org/packages/decisionrules/deci
 # Defining Custom domain
 
 Custom domain is special class that is designed for those who uses DecisionRules in private cloud or as on-premise. Class takes up to 3 arguments.
-
   
 Domain argument is name of desired domain, protocol is HTTP or HTTPS and port is TCP/IP port.
 
@@ -87,9 +86,7 @@ Management class takes on argument, management api key. Class exposes number of 
 ```php
 public  manageRules(){
 	$managementKey = "MY_MANAGEMENT_KEY";
-
 	$manager = new Management($managementKey);
-
 	return $manager->getRule($ruleId, 1);
 }
 ```
