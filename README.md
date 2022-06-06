@@ -29,6 +29,9 @@ $customDomain = new  CustomDomain("localhost", Protocols::HTTP, 8080);
 Solver class takes up to 2 arguments that are `api key`(can be generated on dashboard), `custom domain` object. Class exposes two methods: solveRule and solveRuleFlow.
 
 ```php
+use DecisionRules\Solver;
+use DecisionRules\Enums\SolverStrategy;
+
 public function awesomeSolver(){
 	$ruleId = "MY_RULE_ID";
 	$solver = new Solver($apiKey);
@@ -84,6 +87,8 @@ Management class takes on argument, management api key. Class exposes number of 
 ## Example usage
 
 ```php
+use DecisionRules\Management;
+
 public  manageRules(){
 	$managementKey = "MY_MANAGEMENT_KEY";
 	$manager = new Management($managementKey);
